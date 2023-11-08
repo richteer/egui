@@ -1813,6 +1813,19 @@ impl Context {
         }
     }
 
+    /// Is the provided location over any egui area?
+    pub fn is_pos2_over_area(&self, pointer_pos: Pos2) -> bool {
+        if let Some(layer) = self.layer_id_at(pointer_pos) {
+            if layer.order == Order::Background {
+                !self.frame_state(|state| state.unused_rect.contains(pointer_pos))
+            } else {
+                true
+            }
+        } else {
+            false
+        }
+    }
+
     /// True if egui is currently interested in the pointer (mouse or touch).
     ///
     /// Could be the pointer is hovering over a [`Window`] or the user is dragging a widget.
