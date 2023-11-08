@@ -735,6 +735,8 @@ mod glow_integration {
         }
 
         fn init_run_state(&mut self, event_loop: &EventLoopWindowTarget<UserEvent>) -> Result<()> {
+            // TODO: put this somewhere else probably
+            event_loop.set_device_event_filter(winit::event_loop::DeviceEventFilter::Never);
             crate::profile_function!();
             let storage = epi_integration::create_storage(
                 self.native_options
