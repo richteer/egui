@@ -1017,6 +1017,13 @@ impl Frame {
         }
     }
 
+    /// On desktop: Set mouse passthrough.
+    ///
+    /// Supported on platforms that support set_cursor_hittest
+    pub fn set_mouse_passthrough(&mut self, mouse_passthrough: bool) {
+        self.output.mouse_passthrough = Some(mouse_passthrough);
+    }
+
     /// for integrations only: call once per frame
     #[cfg(any(feature = "glow", feature = "wgpu"))]
     pub(crate) fn take_app_output(&mut self) -> backend::AppOutput {
@@ -1270,5 +1277,8 @@ pub(crate) mod backend {
 
         #[cfg(not(target_arch = "wasm32"))]
         pub screenshot_requested: bool,
+
+        /// Set to modify the cursor hittest setting.
+        pub mouse_passthrough: Option<bool>,
     }
 }

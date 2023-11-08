@@ -262,6 +262,7 @@ pub fn handle_app_output(
         maximized,
         focus,
         attention,
+        mouse_passthrough,
     } = app_output;
 
     if let Some(decorated) = decorated {
@@ -314,6 +315,12 @@ pub fn handle_app_output(
     if let Some(maximized) = maximized {
         window.set_maximized(maximized);
         window_state.maximized = maximized;
+    }
+
+    if let Some(mouse_passthrough) = mouse_passthrough {
+        if let Err(_) = window.set_cursor_hittest(!mouse_passthrough) {
+            log::debug!("ignoring set_cursor_hittest = {mouse_passthrough} on X11");
+        };
     }
 
     if !window.has_focus() {
